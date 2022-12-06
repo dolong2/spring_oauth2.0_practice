@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate
 class Member(
     val email: String,
     val name: String,
+    val provider: String,
     @Enumerated(EnumType.STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Role", joinColumns = [JoinColumn(name = "member_id")])
