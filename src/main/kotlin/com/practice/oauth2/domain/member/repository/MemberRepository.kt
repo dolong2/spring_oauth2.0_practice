@@ -1,4 +1,4 @@
-package com.practice.oauth2.infraStructure.persistence.member.repository
+package com.practice.oauth2.domain.member.repository
 
 import com.practice.oauth2.domain.member.Member
 import org.springframework.data.jpa.repository.JpaRepository
