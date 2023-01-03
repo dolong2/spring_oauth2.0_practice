@@ -1,21 +1,26 @@
 package com.practice.oauth2.domain.member
 
+import com.practice.oauth2.global.entity.BaseIdEntity
 import jakarta.persistence.*
-import org.hibernate.annotations.DynamicUpdate
 
 
 @Entity
-@DynamicUpdate
 class Member(
     val email: String,
     val name: String,
     val provider: String,
+    val nickname: String,
     @Enumerated(EnumType.STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Role", joinColumns = [JoinColumn(name = "member_id")])
     val roles: MutableList<Role>,
-) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0
+): BaseIdEntity(){
+    fun update(name: String, email: String): Member =
+        Member(
+            email = email,
+            name = name,
+            provider = this.provider,
+            nickname = this.nickname,
+            roles = this.roles
+        )
 }
