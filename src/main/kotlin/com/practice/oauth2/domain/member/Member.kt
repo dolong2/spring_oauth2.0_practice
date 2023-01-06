@@ -9,7 +9,7 @@ class Member(
     val email: String,
     val name: String,
     val provider: String,
-    val nickname: String,
+    val picture: String,
     @Enumerated(EnumType.STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Role", joinColumns = [JoinColumn(name = "member_id")])
@@ -20,7 +20,7 @@ class Member(
             email = email,
             name = name,
             provider = this.provider,
-            nickname = this.nickname,
-            roles = this.roles
+            roles = this.roles,
+            picture = this.picture,
         )
 }
