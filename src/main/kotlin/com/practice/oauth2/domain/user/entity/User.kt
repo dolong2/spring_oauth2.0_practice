@@ -14,6 +14,7 @@ class User(
     val id: UUID = UUID.randomUUID(),
     val email: String,
     val name: String,
+    val password: String?,
     @Column(unique = true)
     val socialId: String,
     @Enumerated(EnumType.STRING)
