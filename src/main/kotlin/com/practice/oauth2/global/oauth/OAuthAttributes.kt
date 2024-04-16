@@ -3,6 +3,8 @@ package com.practice.oauth2.global.oauth
 import com.practice.oauth2.domain.user.entity.User
 import com.practice.oauth2.domain.user.entity.enums.Role
 import com.practice.oauth2.domain.user.entity.enums.SocialType
+import com.practice.oauth2.global.oauth.user.KakaoOAuthUserInfo
+import com.practice.oauth2.global.oauth.user.NaverOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.OAuthUserInfo
 import java.util.*
 
@@ -39,10 +41,28 @@ class OAuthAttributes(
          */
         fun of(socialType: SocialType, userNameAttributeName: String, attributes: Map<String, Any?>): OAuthAttributes {
             return when(socialType) {
+                SocialType.KAKAO -> {
+                    ofKakao(userNameAttributeName, attributes)
+                }
+                SocialType.NAVER -> {
+                    ofNaver(userNameAttributeName, attributes)
+                }
                 else -> {
                     throw RuntimeException()
                 }
             }
         }
+
+        private fun ofKakao(userNameAttributeName: String, attributes: Map<String, Any?>): OAuthAttributes =
+            OAuthAttributes(
+                userNameAttributeName,
+                KakaoOAuthUserInfo(attributes)
+            )
+
+        private fun ofNaver(userNameAttributeName: String, attributes: Map<String, Any?>): OAuthAttributes =
+            OAuthAttributes(
+                userNameAttributeName,
+                NaverOAuthUserInfo(attributes)
+            )
     }
 }
