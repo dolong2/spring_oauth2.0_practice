@@ -28,8 +28,9 @@ class ExceptionFilter(
                     writeErrorResponse(response, ex)
                 }
                 else -> {
-                    logErrorResponse(request, ErrorCode.INTERNAL_ERROR)
-                    writeErrorResponse(response, ex)
+                    val errorCode = ErrorCode.INTERNAL_ERROR
+                    logErrorResponse(request, errorCode)
+                    writeErrorResponse(response, BasicException(errorCode))
                 }
             }
         }
