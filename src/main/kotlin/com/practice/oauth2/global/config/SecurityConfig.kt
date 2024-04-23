@@ -11,6 +11,7 @@ import com.practice.oauth2.global.security.CustomAccessDeniedHandler
 import com.practice.oauth2.global.security.CustomAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -42,6 +43,9 @@ class SecurityConfig(
             it.requestMatchers(RequestMatcher { request ->
                 CorsUtils.isPreFlightRequest(request)
             }).permitAll()
+
+            // auth
+            it.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
 
             it.anyRequest().denyAll()
         }
