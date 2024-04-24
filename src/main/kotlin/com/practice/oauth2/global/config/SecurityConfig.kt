@@ -46,6 +46,7 @@ class SecurityConfig(
 
             // auth
             it.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+            it.requestMatchers(HttpMethod.POST, "/auth").permitAll()
 
             it.anyRequest().denyAll()
         }

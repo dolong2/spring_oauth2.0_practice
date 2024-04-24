@@ -1,7 +1,10 @@
 package com.practice.oauth2.domain.auth.presentation
 
 import com.practice.oauth2.domain.auth.presentation.data.extension.toDto
+import com.practice.oauth2.domain.auth.presentation.data.extension.toResponse
+import com.practice.oauth2.domain.auth.presentation.data.request.SignInRequest
 import com.practice.oauth2.domain.auth.presentation.data.request.SignupRequest
+import com.practice.oauth2.domain.auth.presentation.data.response.TokenResponse
 import com.practice.oauth2.domain.auth.service.AuthService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,4 +22,9 @@ class AuthController(
     fun signup(@RequestBody signupRequest: SignupRequest): ResponseEntity<Void> =
         authService.signup(signupRequest.toDto())
             .run { ResponseEntity(HttpStatus.CREATED) }
+
+    @PostMapping
+    fun signIn(@RequestBody signInRequest: SignInRequest): ResponseEntity<TokenResponse> =
+        authService.signIn(signInRequest.toDto())
+            .let { ResponseEntity.ok(it.toResponse()) }
 }
