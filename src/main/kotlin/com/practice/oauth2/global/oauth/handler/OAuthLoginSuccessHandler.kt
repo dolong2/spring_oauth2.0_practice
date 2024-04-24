@@ -1,7 +1,7 @@
 package com.practice.oauth2.global.oauth.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.practice.oauth2.domain.user.presentation.data.response.TokenResponse
+import com.practice.oauth2.domain.auth.presentation.data.response.TokenResponse
 import com.practice.oauth2.global.jwt.util.TokenGenerator
 import com.practice.oauth2.global.oauth.CustomOAuthUser
 import jakarta.servlet.http.HttpServletRequest

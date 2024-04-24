@@ -1,4 +1,4 @@
-package com.practice.oauth2.domain.user.presentation.data.response
+package com.practice.oauth2.domain.auth.presentation.data.response
 
 import java.time.ZonedDateTime
 
