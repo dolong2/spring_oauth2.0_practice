@@ -1,5 +1,7 @@
 package com.practice.oauth2.domain.auth.service
 
+import com.practice.oauth2.domain.auth.entity.RefreshToken
+import com.practice.oauth2.domain.auth.entity.repository.RefreshTokenRepository
 import com.practice.oauth2.domain.auth.exception.AlreadyExistsUserException
 import com.practice.oauth2.domain.auth.service.dto.extension.toEntity
 import com.practice.oauth2.domain.auth.service.dto.request.SignInReqDto
@@ -16,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val tokenGenerator: TokenGenerator
+    private val tokenGenerator: TokenGenerator,
+    private val refreshTokenRepository: RefreshTokenRepository
 ) {
     @Transactional(rollbackFor = [Exception::class])
     fun signup(signupReqDto: SignupReqDto) {
@@ -37,6 +40,14 @@ class AuthService(
         val accessToken = tokenGenerator.generateAccessToken(user.id.toString())
         val refreshToken = tokenGenerator.generateRefreshToken(user.id.toString())
         val accessExpiredTime = tokenGenerator.getAccessExpiredTime()
+
+        val refreshTokenEntity = RefreshToken(
+            userId = user.id,
+            userToken = refreshToken,
+            expiredAt = tokenGenerator.getRefreshExpiredTime().toLocalDateTime()
+        )
+        refreshTokenRepository.save(refreshTokenEntity)
+
         return TokenResDto(accessToken, refreshToken, accessExpiredTime)
     }
 }
