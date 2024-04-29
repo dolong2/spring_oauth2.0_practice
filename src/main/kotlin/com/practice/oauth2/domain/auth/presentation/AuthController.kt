@@ -8,6 +8,7 @@ import com.practice.oauth2.domain.auth.presentation.data.response.TokenResponse
 import com.practice.oauth2.domain.auth.service.AuthService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -34,4 +35,9 @@ class AuthController(
     fun reissue(@RequestHeader("refresh-token") refreshToken: String): ResponseEntity<TokenResponse> =
         authService.reissueToken(refreshToken)
             .let { ResponseEntity.ok(it.toResponse()) }
+
+    @DeleteMapping
+    fun logout(): ResponseEntity<Void> =
+        authService.logout()
+            .run { ResponseEntity.ok().build() }
 }

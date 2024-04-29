@@ -9,6 +9,7 @@ import com.practice.oauth2.domain.auth.service.dto.request.SignupReqDto
 import com.practice.oauth2.domain.auth.service.dto.response.TokenResDto
 import com.practice.oauth2.domain.user.entity.repository.UserRepository
 import com.practice.oauth2.domain.user.exception.UserNotFoundException
+import com.practice.oauth2.domain.user.util.UserUtil
 import com.practice.oauth2.global.jwt.exception.ExpiredTokenException
 import com.practice.oauth2.global.jwt.exception.InvalidTokenException
 import com.practice.oauth2.global.jwt.util.TokenGenerator
@@ -23,7 +24,8 @@ class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val tokenGenerator: TokenGenerator,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val userUtil: UserUtil,
 ) {
     @Transactional(rollbackFor = [Exception::class])
     fun signup(signupReqDto: SignupReqDto) {
@@ -75,5 +77,12 @@ class AuthService(
         refreshTokenRepository.save(newRefreshTokenEntity)
 
         return TokenResDto(accessToken, refreshToken, accessExpiredTime)
+    }
+
+    @Transactional(rollbackFor = [Exception::class])
+    fun logout() {
+        val currentUserId = userUtil.fetchCurrentUser().id
+
+        refreshTokenRepository.deleteByUserId(currentUserId)
     }
 }
