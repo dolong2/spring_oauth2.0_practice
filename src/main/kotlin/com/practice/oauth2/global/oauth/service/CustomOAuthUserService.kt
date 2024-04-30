@@ -1,5 +1,6 @@
 package com.practice.oauth2.global.oauth.service
 
+import com.practice.oauth2.domain.auth.exception.AlreadyExistsUserException
 import com.practice.oauth2.domain.user.entity.User
 import com.practice.oauth2.domain.user.entity.enums.SocialType
 import com.practice.oauth2.domain.user.entity.repository.UserRepository
@@ -52,7 +53,7 @@ class CustomOAuthUserService(
     private fun getUser(attributes: OAuthAttributes, socialType: SocialType): User {
         val socialId = attributes.oauthUserInfo.getId()
         if (userRepository.existsByEmailAndSocialTypeNot(attributes.oauthUserInfo.getEmail(), socialType))
-            throw RuntimeException()
+            throw AlreadyExistsUserException()
         return userRepository.findUserBySocialIdAndSocialType(socialId, socialType)
             ?: saveUser(attributes, socialType)
     }
