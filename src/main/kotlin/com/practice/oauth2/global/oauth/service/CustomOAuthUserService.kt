@@ -6,6 +6,7 @@ import com.practice.oauth2.domain.user.entity.enums.SocialType
 import com.practice.oauth2.domain.user.entity.repository.UserRepository
 import com.practice.oauth2.global.oauth.CustomOAuthUser
 import com.practice.oauth2.global.oauth.OAuthAttributes
+import com.practice.oauth2.global.oauth.exception.InvalidSocialTypeException
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
@@ -47,7 +48,7 @@ class CustomOAuthUserService(
         when(registrationId) {
             OAuthPrefix.KAKAO -> SocialType.KAKAO
             OAuthPrefix.NAVER -> SocialType.NAVER
-            else -> throw RuntimeException()
+            else -> throw InvalidSocialTypeException()
         }
 
     private fun getUser(attributes: OAuthAttributes, socialType: SocialType): User {
