@@ -51,6 +51,8 @@ class CustomOAuthUserService(
 
     private fun getUser(attributes: OAuthAttributes, socialType: SocialType): User {
         val socialId = attributes.oauthUserInfo.getId()
+        if (userRepository.existsByEmailAndSocialTypeNot(attributes.oauthUserInfo.getEmail(), socialType))
+            throw RuntimeException()
         return userRepository.findUserBySocialIdAndSocialType(socialId, socialType)
             ?: saveUser(attributes, socialType)
     }
