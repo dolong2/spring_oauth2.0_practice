@@ -29,4 +29,5 @@ enum class ErrorCode(
 
     //OAuth
     OAUTH_LOGIN_FAILURE(HttpStatus.FORBIDDEN.value(), 40001, "social login fails"),
+    INVALID_SOCIAL_TYPE(HttpStatus.BAD_REQUEST.value(), 40002, "this social type is invalid"),
 }
