@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.practice.oauth2.global.error.filter.ExceptionFilter
 import com.practice.oauth2.global.jwt.filter.JwtReqFilter
 import com.practice.oauth2.global.jwt.util.TokenParser
+import com.practice.oauth2.global.oauth.filter.OAuthExceptionFilter
 import com.practice.oauth2.global.oauth.handler.OAuthLoginFailureHandler
 import com.practice.oauth2.global.oauth.handler.OAuthLoginSuccessHandler
 import com.practice.oauth2.global.oauth.service.CustomOAuthUserService
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
@@ -64,6 +66,7 @@ class SecurityConfig(
         http
             .addFilterBefore(ExceptionFilter(objectMapper), UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(JwtReqFilter(tokenParser), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(OAuthExceptionFilter(objectMapper), OAuth2LoginAuthenticationFilter::class.java)
 
         http
             .exceptionHandling {
