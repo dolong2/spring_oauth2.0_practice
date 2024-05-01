@@ -1,10 +1,12 @@
 package com.practice.oauth2.global.oauth.service
 
+import com.practice.oauth2.domain.auth.exception.AlreadyExistsUserException
 import com.practice.oauth2.domain.user.entity.User
 import com.practice.oauth2.domain.user.entity.enums.SocialType
 import com.practice.oauth2.domain.user.entity.repository.UserRepository
 import com.practice.oauth2.global.oauth.CustomOAuthUser
 import com.practice.oauth2.global.oauth.OAuthAttributes
+import com.practice.oauth2.global.oauth.exception.InvalidSocialTypeException
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
@@ -46,11 +48,13 @@ class CustomOAuthUserService(
         when(registrationId) {
             OAuthPrefix.KAKAO -> SocialType.KAKAO
             OAuthPrefix.NAVER -> SocialType.NAVER
-            else -> throw RuntimeException()
+            else -> throw InvalidSocialTypeException()
         }
 
     private fun getUser(attributes: OAuthAttributes, socialType: SocialType): User {
         val socialId = attributes.oauthUserInfo.getId()
+        if (userRepository.existsByEmailAndSocialTypeNot(attributes.oauthUserInfo.getEmail(), socialType))
+            throw AlreadyExistsUserException()
         return userRepository.findUserBySocialIdAndSocialType(socialId, socialType)
             ?: saveUser(attributes, socialType)
     }

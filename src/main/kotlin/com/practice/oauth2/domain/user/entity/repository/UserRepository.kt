@@ -7,6 +7,7 @@ import java.util.UUID
 
 interface UserRepository : JpaRepository<User, UUID> {
     fun findUserBySocialIdAndSocialType(socialId: String, socialType: SocialType): User?
+    fun existsByEmailAndSocialTypeNot(email: String, socialType: SocialType): Boolean
     fun existsByEmail(email: String): Boolean
     fun findByEmail(email: String): User?
 }
