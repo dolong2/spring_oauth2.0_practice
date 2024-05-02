@@ -3,6 +3,7 @@ package com.practice.oauth2.global.oauth
 import com.practice.oauth2.domain.user.entity.User
 import com.practice.oauth2.domain.user.entity.enums.Role
 import com.practice.oauth2.domain.user.entity.enums.SocialType
+import com.practice.oauth2.global.oauth.user.GoogleOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.KakaoOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.NaverOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.OAuthUserInfo
@@ -47,6 +48,9 @@ class OAuthAttributes(
                 SocialType.NAVER -> {
                     ofNaver(userNameAttributeName, attributes)
                 }
+                SocialType.GOOGLE -> {
+                    ofGoogle(userNameAttributeName, attributes)
+                }
                 else -> {
                     throw RuntimeException()
                 }
@@ -63,6 +67,12 @@ class OAuthAttributes(
             OAuthAttributes(
                 userNameAttributeName,
                 NaverOAuthUserInfo(attributes)
+            )
+
+        private fun ofGoogle(userNameAttributeName: String, attributes: Map<String, Any?>): OAuthAttributes =
+            OAuthAttributes(
+                userNameAttributeName,
+                GoogleOAuthUserInfo(attributes)
             )
     }
 }

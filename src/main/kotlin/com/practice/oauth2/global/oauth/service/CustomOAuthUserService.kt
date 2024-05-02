@@ -20,6 +20,7 @@ class CustomOAuthUserService(
     private object OAuthPrefix {
         const val NAVER = "naver"
         const val KAKAO = "kakao"
+        const val GOOGLE = "google"
     }
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val delegate = DefaultOAuth2UserService()
@@ -48,6 +49,7 @@ class CustomOAuthUserService(
         when(registrationId) {
             OAuthPrefix.KAKAO -> SocialType.KAKAO
             OAuthPrefix.NAVER -> SocialType.NAVER
+            OAuthPrefix.GOOGLE -> SocialType.GOOGLE
             else -> throw InvalidSocialTypeException()
         }
 
