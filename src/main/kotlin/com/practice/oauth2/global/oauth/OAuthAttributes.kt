@@ -3,6 +3,7 @@ package com.practice.oauth2.global.oauth
 import com.practice.oauth2.domain.user.entity.User
 import com.practice.oauth2.domain.user.entity.enums.Role
 import com.practice.oauth2.domain.user.entity.enums.SocialType
+import com.practice.oauth2.global.oauth.exception.InvalidSocialTypeException
 import com.practice.oauth2.global.oauth.user.GoogleOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.KakaoOAuthUserInfo
 import com.practice.oauth2.global.oauth.user.NaverOAuthUserInfo
@@ -52,7 +53,7 @@ class OAuthAttributes(
                     ofGoogle(userNameAttributeName, attributes)
                 }
                 else -> {
-                    throw RuntimeException()
+                    throw InvalidSocialTypeException()
                 }
             }
         }
